@@ -2,13 +2,14 @@
 library(tuneR)
 library(signal)
 library(numbers)
-setwd("/Users/ryo/Desktop/my/FDN/input")
+cwd <- getwd()
 
 #set file
-prefix <- "/Users/ryo/Desktop/my/FDN/input/"
+prefix <- paste(cwd, "input", sep = "/")
 fnames <- list.files(path=prefix, pattern="*.wav")
 
 for(fname in fnames){
+ setwd(paste(cwd, "input", sep = "/"))
 wav <- fname
 signal <- readWave(wav)@left
 srate <- readWave(wav)@samp.rate
@@ -146,7 +147,6 @@ output <- preout[(bufflength + min + 1):(length(sig) + min)]
 
 #save wav
  dat <- Wave(left=output, right=output, samp.rate=48000, bit=32, pcm=TRUE)
- setwd("/Users/ryo/Desktop/my/FDN/output/4th")
+ setwd(paste(cwd, "output/matrix", sep = "/"))
  writeWave(normalize(dat, unit="32", center=TRUE), filename=sprintf("%s_%05d.wav",  substring(fname, 1, (nchar(fname)- 4)), cutoff))
- setwd("/Users/ryo/Desktop/my/FDN/input")
 }
